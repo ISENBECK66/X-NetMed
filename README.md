@@ -43,14 +43,12 @@ This dataset used for train the model come from Keggle and contains almost 6000 
 - **train.py**: contains the model with the best performance in the testing set, obtained using the notebook
 - **Dockerfile**: contains the image for the docker
 
-
-
 ---
 ## 5 - Loading final model into a service:
 
 #### pipenv 
 
-The script *train.py* load the model : *player_model.bin* and it can run in a separate virtual environment across its dependency files *Pipenv* and *Pipenv.lock*.
+The script *train.py* load the model : *r_model.bin* and it can run in a separate virtual environment across its dependency files *Pipenv* and *Pipenv.lock*.
 *flask* was used for the local deployment in *train.py* script.
 
 - Install pipenv :
@@ -59,7 +57,7 @@ pip install pipenv
 ```
 - Get a copy of project and dependencies, or clone the repository :
 ```
-git clone https://github.com/bergimax/footballer-value/
+git clone https://github.co/
 ```
 - From the project's folder, run :
 ``` 
@@ -91,16 +89,11 @@ The build command can take several minutes to run. Just give it time.
 ```
 python test.py
 ```
-- If you edit the market values to analize some data, you should modify the parameters in the file test.py, maybe you cane take them from the smaller dataset present in this repo of each market:
+- If you e market:
 ```
 vi test.py
 ```
-P.S: The current values in test.py are taken from the dataset, raw number 2075.
-
 ---
 
 #### Video of the service running :
-I loaded a small video where you can see how the service works, everything it's in the 'Proof of working' folder.
-
-The video show the local service starting in Docker and how it respond to the test.py
 I also attached the screenshot of the service running with flask and gunicorn.
