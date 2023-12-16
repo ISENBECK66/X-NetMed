@@ -1,12 +1,14 @@
-# X-NetMed
+# X-NetMed, or: 
+## *A Neural Network approach to pneumonia identification in X-rays images*
+
 ![Screenshot](human-skull-x-ray-image.webp)
-
-A Neural Network approach to pneumonia identification in X-rays images
-
 ---
 
-## Scenario and problem description :
-## The importance of a precox diagnosis in pneumonia disease. 
+
+### The importance of a precox diagnosis in pneumonia disease
+
+/n
+/n
 
 Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
 
