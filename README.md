@@ -1,37 +1,39 @@
 # X-NetMed, or: 
 ## *A Neural Network approach to pneumonia identification in X-rays images*
-
 ![Screenshot](human-skull-x-ray-image.webp)
 ---
+### The importance of a precox diagnosis in pneumonia disease :
 
-
-### The importance of a precox diagnosis in pneumonia disease
-
-/n
-/n
-
+####
 Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
-
 Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and sometimes appropriate microbiological testing. Its primary purpose is to diagnose or exclude pneumonia.
-
 Certainly, in the case of patients admitted to hospital there is evidence that the early performance of a chest radiograph is associated with clinical benefit, including a significantly shorter hospital length of stay and antibiotic use after radiologyIt is possible for doctors to understand the presence of Pneumonia.
-
+####
 ---
-## 2 - The Goal
-
-The target of this project is to automatically evaluate the X-ray images, and provide a fast diagnosis in presence of a pneumonia infection.
-We obtained this result trought a Neural Network and a pretrained model that it is been adapted for our scopes.
-
+### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images :
+####
+The target of this project is to automatically verify the presence of a a pneumonia infection throught the analisys of the x-ray images of the patient's chest.
+We used a Neural Network and a pretrained model that it is been adapted for our scopes.
+The choosen pre-trained model it has been *ResNet50* from *keras* package.
+The initial weights for the preprocess of the images has come from *imagenet*.
+####
 --- 
-
-## 3 - Data
-
-This dataset used for train the model come from Keggle and contains almost 6000 x-ray image splitted in classes:
+### Dataset :
+####
+The *dataset* that is been used for train our model come from *Keggle* and contains almost 6000 x-ray images splitted in *NORMAL* and *PNEUMONIA* classes:
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
-
+####
 ---
+### Repository :
+#### notebook.ipynb file
+This repository contains *notebook.ipynb file* : In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
+We worked on the *model* building on its top our specific *dense layer / inner layer* trained on the images loaded from our *dataset*.     
+In the same file we tried different setup to obtain the best performance, tuning model parameters, as : *leraning_rate*, *drop_rate* and *augmentation*.
+#### ResNet50_v2_12_0.950.h5 file
+We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*
+#### chest_xray-model folder
 
-## 4 - Structure of the repository
+
 
 ### DATASET
 - **chest_xray_small**: this folder contains the x-ray images used for the training
