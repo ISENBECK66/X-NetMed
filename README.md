@@ -1,5 +1,6 @@
 # X-NetMed
 ![Screenshot](human-skull-x-ray-image.webp)
+
 A Neural Network approach to pneumonia identification in X-rays images
 
 ---
