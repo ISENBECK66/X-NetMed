@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  chest_xray-model:
+    image: final-proj-model:resnet50-v2-001
+  gateway:
+    image: final-proj-gateway:001
+    environment:
+       - TF_SERVING_HOST=chest_xray-model:8500
+    ports:
+       - "9696:9696"
