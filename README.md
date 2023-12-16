@@ -1,18 +1,20 @@
-# X-NetMed
+# X-NetMed, or: 
+## *A Neural Network approach to pneumonia identification in X-rays images*
+
 ![Screenshot](human-skull-x-ray-image.webp)
-
-A Neural Network approach to pneumonia identification in X-rays images
-
 ---
 
-## 1 - Problem description
 
-Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and sometimes appropriate microbiological testing. Its primary purpose is to diagnose or exclude pneumonia, but it will also show the extent of the pneumonia, the presence or absence of associated comorbid conditions or complications, all of which may act as prognostic indicators, and it can also be used for subsequent follow-up to check for resolution.
+### The importance of a precox diagnosis in pneumonia disease
+
+/n
+/n
+
+Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
+
+Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and sometimes appropriate microbiological testing. Its primary purpose is to diagnose or exclude pneumonia.
 
 Certainly, in the case of patients admitted to hospital there is evidence that the early performance of a chest radiograph is associated with clinical benefit, including a significantly shorter hospital length of stay and antibiotic use after radiologyIt is possible for doctors to understand the presence of Pneumonia.
-
-Pneumonia is an infection that affects one or both lungs. It causes the air sacs, or alveoli, of the lungs to fill up with fluid or pus. Bacteria, viruses, or fungi may cause pneumonia. 
-Symptoms can range from mild to serious and may include a cough with or without mucus, fever, chills, and trouble breathing
 
 ---
 ## 2 - The Goal
