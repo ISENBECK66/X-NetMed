@@ -127,11 +127,13 @@ docker-compose up
 ```
 python test.py
 ```
-Warning : you need the url of a chest x-ray image to eavluate.
-here there is a couple of url that can be tested : 
+Warning : the URL of an image of a chest in x-ray will be requested from *test.py* script.
+
+Here there are some urls that can be tested : 
 https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true - (NORMALE)
 https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true - (NORMALE)
 https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - (PNEUMONIA)
 https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - (PNEUMONIA)
+
 ---
 # 3 - Kubernetes 
