@@ -25,38 +25,36 @@ The *dataset* that is been used for train our model come from *Keggle* and conta
 ####
 ---
 ### Repository :
-#### notebook.ipynb file
+#### - notebook.ipynb file
 This repository contains *notebook.ipynb file* : In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
 We worked on the *model* building on its top our specific *dense layer / inner layer* trained on the images loaded from our *dataset*.     
 In the same file we tried different setup to obtain the best performance, tuning model parameters, as : *leraning_rate*, *drop_rate* and *augmentation*.
-#### ResNet50_v2_12_0.950.h5 file
-We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*
-#### chest_xray-model folder
-We obtain the final format of our model throught the method *tf_saved_model.save()* , in this way we can use it from *tensorflow/serving*
-#### image-model-dockerfile
+#### - ResNet50_v2_12_0.950.h5 file
+We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*.
+#### - chest_xray-model folder
+We obtain the final format of our model throught the method *tf_saved_model.save()* , in this way we can use it from *tensorflow/serving*.
+#### - image-model-dockerfile
 This is the *docker* that we buil to apply the model.
-We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*
-#### tf-serving-connect.ipynb
+We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*.
+#### - tf-serving-connect.ipynb
 Through this notebook we implemented the *gateway* service that provide image's pre-elaboration and send it to *image-model-dockerfile* that it is running to evaluate the x-ray chest images submitted.
-#### gateway.py
+#### - gateway.py
 this is the convertion of the notebook *tf-serving-connect.ipynb* in a python script.
-#### Pipfile and Pipfile.lock
+#### - Pipfile and Pipfile.lock
 These files specify the dependencies that *gateway.py* script needs to install running in a virtual environment.
-#### proto.py
-In this file we included the method *np_to_protobuf()*, this is the only one we need from *tensorflow*.
-In this way we can avoid to include in the project the huge tensorflow library (1.7Gb)
-#### image-gateway.dockerfile
-Finally we build another *docker* for the gateway service, and we use this dockerfile to specify the parameters of this *docker*.
-#### test.py
-This script provide the access at the diagnostic service
+#### - proto.py
+In this file we included the method *np_to_protobuf()*, this is the only method thatvwe need from *tensorflow* library.
+In this way we can avoid to include in the project the huge *tensorflow* library (1.7Gb).
+#### - image-gateway.dockerfile
+Finally we build another *docker* for the *gateway service*, and we use this *dockerfile* to specify the parameters of this *docker*.
+#### - test.py
+This script provide the access at the diagnostic service, it load the image url from the terminal and send it to the *gateway-service*.
+#### - docker-compose.yaml
+This configuration file it is used to put the two docker visible on the same network and permit to the service to be sìtested in local using the *docker-compose* function.
 
+### Different way to load the final model into a service: :
 
----
-### Loading final model into a service :
-#### pipenv 
-
-We turn the notebook *tf-serving-connect.ipynb* into a script *gateway.py* that send to the *model-dockerfile* 
-
+#### - Flask :
 
 e model : *r_model.bin* and it can run in a separate virtual environment across its dependency files *Pipenv* and *Pipenv.lock*.
 *flask* was used for the local deployment in *train.py* script.
