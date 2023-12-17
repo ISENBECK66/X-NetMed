@@ -66,21 +66,26 @@ This configuration file it is used to put the two docker visible on the same net
 ---
 ### Running the project :
 
-####Get a copy of project and dependencies, or clone the repository :
+#### Get a copy of project and dependencies, or clone the repository :
 ```
 git clone https://github.co******************/
 ```
+Terminal_1
+
 #### Run the Docker for the *model* service :
-- Building the *image-docker* :
+- Building the *image-model.dockerfile* :
 ```
 docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
 ```
-- Run the *image-docker* :
+- Run the *image-model.dockerfile* :
 ```
 docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ```
 #### There are many ways to run the *gateway* service :
-#### 1 Flask :
+
+Terminal_2
+
+#### 1 - Flask, gunicorn and virtual environment:
 ```
 pip install pipenv
 ```
@@ -93,8 +98,24 @@ pipenv install
 ```
 pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ```
+Terminal_3 :
+```
+python test_local.py
+```
+Warning : the url of the image it is hardcoded in this script, if you want to eavluate another image please modify the script before to run it.
 
-#### 2 Docker
+#### 2 - Run the Docker for the *gateway* service :
+- Building the *image-gateway.dockerfile* :
+```
+docker build -t final-proj-gateway:001 -f image-gateway.dockerfile .
+```
+- Run the *image-gateway.dockerfile* :
+```
+docker run -it --rm -p 9696:9696 final-proj-gateway:001
+```
+
+#####################
+
 
 
 
