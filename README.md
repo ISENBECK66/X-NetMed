@@ -81,7 +81,7 @@ docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
 ```
 docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ```
-#### There are many ways to run the *gateway* service :
+### There are many ways to run the *gateway* service :
 
 Terminal_2
 
