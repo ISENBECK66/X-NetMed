@@ -32,27 +32,33 @@ In the same file we tried different setup to obtain the best performance, tuning
 #### ResNet50_v2_12_0.950.h5 file
 We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*
 #### chest_xray-model folder
+We obtain the final format of our model throught the method *tf_saved_model.save()* , in this way we can use it from *tensorflow/serving*
+#### image-model-dockerfile
+This is the *docker* that we buil to apply the model.
+We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*
+#### tf-serving-connect.ipynb
+Through this notebook we implemented the *gateway* service that provide image's pre-elaboration and send it to *image-model-dockerfile* that it is running to evaluate the x-ray chest images submitted.
+#### gateway.py
+this is the convertion of the notebook *tf-serving-connect.ipynb* in a python script.
+#### Pipfile and Pipfile.lock
+These files specify the dependencies that *gateway.py* script needs to install running in a virtual environment.
+#### proto.py
+In this file we included the method *np_to_protobuf()*, this is the only one we need from *tensorflow*.
+In this way we can avoid to include in the project the huge tensorflow library (1.7Gb)
+#### image-gateway.dockerfile
+Finally we build another *docker* for the gateway service, and we use this dockerfile to specify the parameters of this *docker*.
+#### test.py
+This script provide the access at the diagnostic service
 
-
-
-### DATASET
-- **chest_xray_small**: this folder contains the x-ray images used for the training
-
-### Files
-- **Proj1.ipynb**: 
-- **Pipfile and Pipfile.lock**: contains the dependencies to run the repo
-- **predict.py**: contains the prediction using flask
-- **test.py**: contains some values to test the model
-- **player_model.bin**: this is the model got from the train.py using Pickle
-- **train.py**: contains the model with the best performance in the testing set, obtained using the notebook
-- **Dockerfile**: contains the image for the docker
 
 ---
-## 5 - Loading final model into a service:
-
+### Loading final model into a service :
 #### pipenv 
 
-The script *train.py* load the model : *r_model.bin* and it can run in a separate virtual environment across its dependency files *Pipenv* and *Pipenv.lock*.
+We turn the notebook *tf-serving-connect.ipynb* into a script *gateway.py* that send to the *model-dockerfile* 
+
+
+e model : *r_model.bin* and it can run in a separate virtual environment across its dependency files *Pipenv* and *Pipenv.lock*.
 *flask* was used for the local deployment in *train.py* script.
 
 - Install pipenv :
