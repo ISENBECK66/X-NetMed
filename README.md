@@ -24,7 +24,18 @@ The *dataset* that is been used for train our model come from *Keggle* and conta
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
 ####
 ---
-### Repository :
+### Software architecture :
+We decided to split the service in two separated function :
+#### *Model* : 
+This function needs a lot of GPU resources and its task consist into apply the model on the data provided and send back the results.
+#### *Gatewey* :
+This function get the input data from the user interface and pre-elaborate the image.
+After this elaboration the service send the image to the *Model-service* to receive the evaluation.
+Once the function have the evaluation back from the *Model* service, it adjust the data and provide to a post-elaboration before to give data back to the user.
+
+---
+
+### Repository content:
 #### - notebook.ipynb file
 This repository contains *notebook.ipynb file* : In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
 We worked on the *model* building on its top our specific *dense layer / inner layer* trained on the images loaded from our *dataset*.     
@@ -52,32 +63,41 @@ This script provide the access at the diagnostic service, it load the image url 
 #### - docker-compose.yaml
 This configuration file it is used to put the two docker visible on the same network and permit to the service to be sìtested in local using the *docker-compose* function.
 
-### Different way to load the final model into a service: :
+---
+### Running the project :
 
-#### - Flask :
-
-e model : *r_model.bin* and it can run in a separate virtual environment across its dependency files *Pipenv* and *Pipenv.lock*.
-*flask* was used for the local deployment in *train.py* script.
-
-- Install pipenv :
+####Get a copy of project and dependencies, or clone the repository :
+```
+git clone https://github.co******************/
+```
+#### Run the Docker for the *model* service :
+- Building the *image-docker* :
+```
+docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
+```
+- Run the *image-docker* :
+```
+docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
+```
+#### There are many ways to run the *gateway* service :
+#### 1 Flask :
 ```
 pip install pipenv
 ```
-- Get a copy of project and dependencies, or clone the repository :
-```
-git clone https://github.co/
-```
-- From the project's folder, run :
+From the project's folder, run :
 ``` 
 pipenv install
 ```
 - All the dependencies should be automatically soddisfied, just verify.
 - Run the local service using gunicorn inside the virtual environment:
 ```
-pipenv run gunicorn --bind 0.0.0.0:9696 predict:app
+pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ```
 
-#### Docker
+#### 2 Docker
+
+
+
 There is also the file: *Dockerfile* in the repository, through this you can run the service in a completely separate container. To run the Docker, be sure your docker service is running. If you are using wsl2 on Windows, to run the build command you need to make sure your docker dekstop is running, otherwise you will get an error. 
 For the docker, you have to:
 
