@@ -91,7 +91,6 @@ docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ---
 ##### Terminal_2 - GATEWAY SERVICE
 ---
-
 Flask, gunicorn and virtual environment:
 ```
 pip install pipenv
@@ -108,45 +107,27 @@ pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ---
 #### Terminal_3 - TEST_LOCAL
 ---
-
 ```
 python test_local.py
 ```
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
 
 ---
-# 2 - Docker TF-Serving (model), Docker Gateway, test
+# 2 - Docker-composer and Test
 ---
-##### Terminal_1 - TF-Serving (model) 
+##### Terminal_1 - Docker-compose :
 ---
-*TF-serving* Docker :
-- Build docker:
+- Run the compose :
 ```
-docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
+docker-compose up
 ```
-- Run docker:
+##### Terminal_2 - Test :
 ```
-docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
+python test.py
 ```
----
-##### Terminal_2 - GATEWAY 
----
-*Gateway* service Docker :
-- Build docker:
-```
-docker build -t final-proj-gateway:001 -f image-gateway.dockerfile .
-```
-- Run docker:
-```
-docker run -it --rm -p 9696:9696 final-proj-gateway:001
-```
----
-Terminal_3 - TEST_LOCAL
----
-
-```
-python test_local.py
-```
-Warning : the url of the image it is hardcoded in this script, if you want to eavluate another image please modify the script before to run it.
-
----
+Warning : you need the url of a chest x-ray image to eavluate.
+here there is a couple of url that can be tested : 
+1 - https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true  - NORMALE
+2 - https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true  - NORMALE
+3 - https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - PNEUMONIA
+4 - https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - PNEUMONIA
