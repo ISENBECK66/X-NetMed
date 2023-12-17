@@ -2,7 +2,7 @@
 ## *A Neural Network approach to pneumonia identification in X-rays images*
 ![Screenshot](human-skull-x-ray-image.webp)
 ---
-### The importance of a precox diagnosis in pneumonia disease :
+### The importance of a praecox diagnosis in pneumonia disease :
 
 ####
 Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
@@ -43,7 +43,7 @@ In the same file we tried different setup to obtain the best performance, tuning
 #### - ResNet50_v2_12_0.950.h5 file
 We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*.
 #### - chest_xray-model folder
-This is our final model format, we obtain it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format we can use it from *tensorflow/serving*.
+This is our final model format, we obtain it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format it is compatible with *TF-Serving* service.
 #### - image-model-dockerfile
 This is the *docker* that we buil to apply the model.
 We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*.
@@ -76,23 +76,20 @@ git clone https://github.com/ISENBECK66/X-NetMed
 # 1 - Docker model, flask Gateway, test_local
 
 ---
-
-##### Terminal_1 - MODEL SERVICE
+##### Terminal_1 - TF-Serving (model) 
 ---
 
-*model* service Docker :
-- Building:
+*TF-serving* Docker :
+- Build docker:
 ```
 docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
 ```
-- Run:
+- Run docker:
 ```
 docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ```
 ---
-
 ##### Terminal_2 - GATEWAY SERVICE
-
 ---
 
 Flask, gunicorn and virtual environment:
@@ -109,43 +106,47 @@ pipenv install
 pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ```
 ---
+#### Terminal_3 - TEST_LOCAL
+---
 
+```
+python test_local.py
+```
+Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
+
+---
+# 2 - Docker TF-Serving (model), Docker Gateway, test
+---
+##### Terminal_1 - TF-Serving (model) 
+---
+*TF-serving* Docker :
+- Build docker:
+```
+docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
+```
+- Run docker:
+```
+docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
+```
+---
+##### Terminal_2 - GATEWAY 
+---
+*Gateway* service Docker :
+- Build docker:
+```
+docker build -t final-proj-gateway:001 -f image-gateway.dockerfile .
+```
+- Run docker:
+```
+docker run -it --rm -p 9696:9696 final-proj-gateway:001
+```
+---
 Terminal_3 - TEST_LOCAL
-
 ---
 
 ```
 python test_local.py
 ```
 Warning : the url of the image it is hardcoded in this script, if you want to eavluate another image please modify the script before to run it.
-
----
-
-# 2 - Docker model, Docker Gateway, test_local
-
-
----
-
-Terminal_1 - MODEL SERVICE
-#### *model* service Dockere :
-- Building:
-```
-docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
-```
-- Run:
-```
-docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
-```
-Terminal_2 - GATEWAY SERVICE
-
-#### 2 - Run the Docker for the *gateway* service :
-- Building the *image-gateway.dockerfile* :
-```
-docker build -t final-proj-gateway:001 -f image-gateway.dockerfile .
-```
-- Run the *image-gateway.dockerfile* :
-```
-docker run -it --rm -p 9696:9696 final-proj-gateway:001
-```
 
 ---
