@@ -121,13 +121,17 @@ Warning : the url of the image it is *hardcoded* in the script, if you want to e
 ```
 docker-compose up
 ```
+---
 ##### Terminal_2 - Test :
+---
 ```
 python test.py
 ```
 Warning : you need the url of a chest x-ray image to eavluate.
 here there is a couple of url that can be tested : 
-https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true  - NORMALE
-https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true  - NORMALE
-https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - PNEUMONIA
-https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - PNEUMONIA
+https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true - (NORMALE)
+https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true - (NORMALE)
+https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - (PNEUMONIA)
+https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - (PNEUMONIA)
+---
+# 3 - Kubernetes 
