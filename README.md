@@ -26,12 +26,12 @@ The *dataset* that is been used for train our model come from *Keggle* and conta
 ---
 ### Software architecture :
 We decided to split the service in two separated function :
-#### *Model* : 
-This function needs a lot of GPU resources and its task consist into apply the model on the data provided and send back the results.
-#### *Gatewey* :
+#### TF-Serving (*Model*) : 
+This function needs a lot of GPU resources and its task consist into apply the *model* on the data provided from the *gateway* and send back the results.
+#### *Gateway* :
 This function get the input data from the user interface and pre-elaborate the image.
-After this elaboration the service send the image to the *Model-service* to receive the evaluation.
-Once the function have the evaluation back from the *Model* service, it adjust the data and provide to a post-elaboration before to give data back to the user.
+After this elaboration the *gateway-service* send the data to the *TF-Serving* and receive back the evaluation.
+Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted there in a post-elaboration and give back to the *user-terminal*.
 
 ---
 
@@ -64,28 +64,38 @@ This script provide the access at the diagnostic service, it loads the image url
 This configuration file it is used to put the two docker in the same network and test the services using the *docker-compose* function.
 
 ---
-### Running the project :
 
+### Running the project :
 #### Get a copy of project and dependencies, or clone the repository :
 ```
-git clone https://github.co******************/
+git clone https://github.com/ISENBECK66/X-NetMed
 ```
-Terminal_1
 
-#### Run the Docker for the *model* service :
-- Building the *image-model.dockerfile* :
+---
+
+# 1 - Docker model, flask Gateway, test_local
+
+---
+
+##### Terminal_1 - MODEL SERVICE
+---
+
+*model* service Docker :
+- Building:
 ```
 docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
 ```
-- Run the *image-model.dockerfile* :
+- Run:
 ```
 docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ```
-### There are many ways to run the *gateway* service :
+---
 
-Terminal_2
+##### Terminal_2 - GATEWAY SERVICE
 
-#### 1 - Flask, gunicorn and virtual environment:
+---
+
+Flask, gunicorn and virtual environment:
 ```
 pip install pipenv
 ```
@@ -98,11 +108,35 @@ pipenv install
 ```
 pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ```
-Terminal_3 :
+---
+
+Terminal_3 - TEST_LOCAL
+
+---
+
 ```
 python test_local.py
 ```
 Warning : the url of the image it is hardcoded in this script, if you want to eavluate another image please modify the script before to run it.
+
+---
+
+# 2 - Docker model, Docker Gateway, test_local
+
+
+---
+
+Terminal_1 - MODEL SERVICE
+#### *model* service Dockere :
+- Building:
+```
+docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
+```
+- Run:
+```
+docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
+```
+Terminal_2 - GATEWAY SERVICE
 
 #### 2 - Run the Docker for the *gateway* service :
 - Building the *image-gateway.dockerfile* :
@@ -114,35 +148,4 @@ docker build -t final-proj-gateway:001 -f image-gateway.dockerfile .
 docker run -it --rm -p 9696:9696 final-proj-gateway:001
 ```
 
-#####################
-
-
-
-
-There is also the file: *Dockerfile* in the repository, through this you can run the service in a completely separate container. To run the Docker, be sure your docker service is running. If you are using wsl2 on Windows, to run the build command you need to make sure your docker dekstop is running, otherwise you will get an error. 
-For the docker, you have to:
-
-- From the project directory, create the docker image :
-```
-docker build -t player_prediction .
-```
-- Run the docker image created:
-```
-docker run -it --rm -p 9696:9696 player_prediction:latest
-```
-The build command can take several minutes to run. Just give it time.
-
-#### Test the local service:
-
-- To test the local service, you can run the test script in another terminal:
-```
-python test.py
-```
-- If you e market:
-```
-vi test.py
-```
 ---
-
-#### Video of the service running :
-I also attached the screenshot of the service running with flask and gunicorn.
