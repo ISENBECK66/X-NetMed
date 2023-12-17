@@ -43,7 +43,7 @@ In the same file we tried different setup to obtain the best performance, tuning
 #### - ResNet50_v2_12_0.950.h5 file
 We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*.
 #### - chest_xray-model folder
-We obtain the final format of our model throught the method *tf_saved_model.save()* , in this way we can use it from *tensorflow/serving*.
+This is our final model format, we obtain it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format we can use it from *tensorflow/serving*.
 #### - image-model-dockerfile
 This is the *docker* that we buil to apply the model.
 We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*.
@@ -57,11 +57,11 @@ These files specify the dependencies that *gateway.py* script needs to install r
 In this file we included the method *np_to_protobuf()*, this is the only method thatvwe need from *tensorflow* library.
 In this way we can avoid to include in the project the huge *tensorflow* library (1.7Gb).
 #### - image-gateway.dockerfile
-Finally we build another *docker* for the *gateway service*, and we use this *dockerfile* to specify the parameters of this *docker*.
+This is the file to build the *docker* for the *gateway service*. We use this *dockerfile* to specify its parameters.
 #### - test.py
-This script provide the access at the diagnostic service, it load the image url from the terminal and send it to the *gateway-service*.
+This script provide the access at the diagnostic service, it loads the image url from the *user_terminal* and send it to the *gateway-service* receving back the image evaluation.
 #### - docker-compose.yaml
-This configuration file it is used to put the two docker visible on the same network and permit to the service to be sìtested in local using the *docker-compose* function.
+This configuration file it is used to put the two docker in the same network and test the services using the *docker-compose* function.
 
 ---
 ### Running the project :
