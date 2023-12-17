@@ -73,7 +73,7 @@ git clone https://github.com/ISENBECK66/X-NetMed
 
 ---
 
-# 1 - Docker model, flask Gateway, test_local
+# 1 - Docker TF-Serving, flask Gateway, test_local
 
 ---
 ##### Terminal_1 - TF-Serving (model) 
@@ -105,7 +105,7 @@ pipenv install
 pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ```
 ---
-#### Terminal_3 - TEST_LOCAL
+##### Terminal_3 - TEST_LOCAL
 ---
 ```
 python test_local.py
@@ -113,7 +113,7 @@ python test_local.py
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
 
 ---
-# 2 - Docker-composer and Test
+# 2 - docker-composer and Test
 ---
 ##### Terminal_1 - Docker-compose :
 ---
@@ -127,7 +127,7 @@ python test.py
 ```
 Warning : you need the url of a chest x-ray image to eavluate.
 here there is a couple of url that can be tested : 
-1 - https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true  - NORMALE
-2 - https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true  - NORMALE
-3 - https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - PNEUMONIA
-4 - https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - PNEUMONIA
+https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true  - NORMALE
+https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true  - NORMALE
+https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - PNEUMONIA
+https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - PNEUMONIA
