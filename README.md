@@ -88,7 +88,8 @@ git clone https://github.com/ISENBECK66/X-NetMed
 
 ---
 
-# Deployment 1 - Docker and flask: a local implementation!
+# Deployment 1 - Docker and flask 
+## A local implementation!
 ---
 ##### Prerequisite :
 ---
@@ -134,7 +135,8 @@ python test_local.py
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
 
 ---
-# Deployment 2: docker-compose: run everything in dockers, almost ready for the cloud! 
+# Deployment 2: docker-compose
+## Run everything in dockers, almost ready for the cloud! 
 
 ---
 ##### Prerequisite:
@@ -167,7 +169,8 @@ https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - 
 ######
 
 ---
-# Deployment 3 : Kubernetes - Running dockers in the cloud with automatic application scaling and management! 
+# Deployment 3 : Kubernetes
+##Run dockers in the cloud with automatic scaling and management! 
 ---
 
 ##### Prerequisite:
