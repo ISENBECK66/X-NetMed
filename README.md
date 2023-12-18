@@ -18,7 +18,7 @@ The choosen pre-trained model it has been *ResNet50* from the *keras* package.
 The initial weights for the preprocess of the images come from *imagenet*.
 ####
 --- 
-### Dataset :
+### Dataset:
 ####
 The *dataset* that is been used for train our model come from *Keggle* and contains almost 6000 x-ray images splitted in *NORMAL* and *PNEUMONIA* classes.
 Here you can find all the information that you need about the dataset :
@@ -26,12 +26,12 @@ Here you can find all the information that you need about the dataset :
 ####
 ---
 ### Software architecture :
-We decided to develop two services dedicated to two specific functions :
-#### TF-Serving (*Model*) : 
+We decided to develop two services dedicated to two specific functions:
+#### TF-Serving (*Model*): 
 This function get in input a pre-eleborate image, and it is designed only to apply inference on it using the model that we trained for this pourpouse. 
 This function needs a lot of GPU resources to evaluate the image and this is a reason behind our choice to have two different services. 
 The *model* is applied on the data coming from the *gateway-service* and the service send back to it the results obtained from the elaboration.
-#### *Gateway-service* :
+#### *Gateway-service*:
 This function read the input image from an URL provided from the user through the user interface, and provide the specific pre-elaboration required from the *model*.
 After this elaboration the *gateway-service* send the data trought the network to the *TF-Serving*, and wait to receive back the evaluation.
 Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted in a final elaboration and gave back to the *user*.
@@ -67,13 +67,13 @@ This script provide the access at the diagnostic service, it loads the image url
 This configuration file it is used to put the two docker in the same network and test the services using the *docker-compose* function.
 #### - kube-config folder
 This folder contains the *kuberenetes* configuration file that we will use in section_3.
-##### - model-deployment.yaml
+#### - model-deployment.yaml
 Configuration file for the model deployment.
-##### - model-service.yaml
+#### - model-service.yaml
 Configuration file for the model service.
-##### - gateway-deployment.yaml
+#### - gateway-deployment.yaml
 Configuration file for the gateway deployment.
-##### - gateway-service.yaml
+#### - gateway-service.yaml
 Configuration file for the gateway service.
 #### - test_kuberenetes.py
 Script to test our services deployed in a local kuberenetes
