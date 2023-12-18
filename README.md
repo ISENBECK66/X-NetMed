@@ -1,8 +1,8 @@
 # X-NetMed, or: 
-## *A Neural Network approach to pneumonia identification in X-rays images*
+## *a Neural Network approach to pneumonia identification in X-rays images*
 ![Screenshot](human-skull-x-ray-image.webp)
 ---
-### The importance of a praecox diagnosis in pneumonia infections :
+### The importance of a praecox pneumonia infection's diagnosis:
 
 ####
 Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
@@ -10,28 +10,31 @@ Not surprisingly many consider that chest radiology, which is a relatively inexp
 Certainly, in the case of patients admitted to hospital there is evidence that the early performance of a chest radiograph is associated with clinical benefit, including a significantly shorter hospital length of stay and antibiotic use after radiologyIt is possible for doctors to understand the presence of Pneumonia.
 ####
 ---
-### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images :
+### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images:
 ####
-The target of this project is to automatically verify the presence of a a pneumonia infection throught the analisys of the x-ray images of the patient's chest.
+The target of this project is to automatically verify the presence of a pneumonia infection throught the analisys of the x-ray images of the patient's chest.
 We used a Neural Network and a pretrained model that it is been adapted for our scopes.
-The choosen pre-trained model it has been *ResNet50* from *keras* package.
-The initial weights for the preprocess of the images has come from *imagenet*.
+The choosen pre-trained model it has been *ResNet50* from the *keras* package.
+The initial weights for the preprocess of the images come from *imagenet*.
 ####
 --- 
 ### Dataset :
 ####
-The *dataset* that is been used for train our model come from *Keggle* and contains almost 6000 x-ray images splitted in *NORMAL* and *PNEUMONIA* classes:
+The *dataset* that is been used for train our model come from *Keggle* and contains almost 6000 x-ray images splitted in *NORMAL* and *PNEUMONIA* classes.
+Here you can find all the information that you need about the dataset :
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
 ####
 ---
 ### Software architecture :
-We decided to split the services in two separated function :
+We decided to develop two services dedicated to two specific functions :
 #### TF-Serving (*Model*) : 
-This function get in input a pre-eleborate image and apply inference on it using the model that we trained for this pourpouse. This function needs a lot of GPU resources, the *model* is applied on the data coming from the *gateway-service* and send back to it the obtained results.
+This function get in input a pre-eleborate image, and it is designed only to apply inference on it using the model that we trained for this pourpouse. 
+This function needs a lot of GPU resources to evaluate the image and this is a reason behind our choice to have two different services. 
+The *model* is applied on the data coming from the *gateway-service* and the service send back to it the results obtained from the elaboration.
 #### *Gateway-service* :
-This function read the input image from an URL provided from the user through the user interface, and provide the request pre-elaboration on the image.
-After this elaboration the *gateway-service* send the data to the *TF-Serving* and receive back the evaluation.
-Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted in a post-elaboration and gave back to the *user*.
+This function read the input image from an URL provided from the user through the user interface, and provide the specific pre-elaboration required from the *model*.
+After this elaboration the *gateway-service* send the data trought the network to the *TF-Serving*, and wait to receive back the evaluation.
+Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted in a final elaboration and gave back to the *user*.
 
 ---
 
@@ -77,15 +80,15 @@ Script to test our services deployed in a local kuberenetes
 
 ---
 
-### Running the project :
-#### Get a copy of project and dependencies, or clone the repository :
+### Running the project:
+#### Get a copy of project and dependencies, or clone the repository:
 ```
 git clone https://github.com/ISENBECK66/X-NetMed
 ```
 
 ---
 
-# 1 - Architecture : Docker for *TF-Serving*, flask for *Gateway*, python for *test_local.py*  (with URL hardcoded in the test script)
+# Deployment 1 - Docker and flask: a local implementation!
 ---
 ##### Prerequisite :
 ---
@@ -112,7 +115,7 @@ docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ---
 ##### Terminal_2 - GATEWAY SERVICE
 ---
-Install dependencies in the virtual environment :
+Install dependencies in the virtual environment:
 (Run it into the folder where Pipfile and Pipfile.lock are located)
 ``` 
 pipenv install
@@ -131,22 +134,23 @@ python test_local.py
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
 
 ---
-# 2 - Architecture : Docker_1 for *TF-Serving*, Docker_2 for *Gateway*, python for *test.py*. (docker-compose to run the two Dockers in the same network)
+# Deployment 2: docker-compose: run everything in dockers, almost ready for the cloud! 
+
 ---
-##### Prerequisite :
+##### Prerequisite:
 ---
-- Install docker-compose :
+- Install docker-compose:
 ```
 install docker-compose
 ```
-##### Terminal_1 - Docker-compose :
+##### Terminal_1 - Docker-compose:
 ---
-- Run the compose :
+- Run the compose:
 ```
 docker-compose up
 ```
 ---
-##### Terminal_2 - Test :
+##### Terminal_2 - Test:
 ---
 ```
 python test.py
@@ -163,7 +167,7 @@ https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - 
 ######
 
 ---
-# Deployment 3 : Kubernetes - Running dockers in the cloud ! 
+# Deployment 3 : Kubernetes - Running dockers in the cloud with automatic application scaling and management! 
 ---
 
 ##### Prerequisite:
