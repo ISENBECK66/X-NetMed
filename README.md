@@ -2,7 +2,7 @@
 ## *A Neural Network approach to pneumonia identification in X-rays images*
 ![Screenshot](human-skull-x-ray-image.webp)
 ---
-### The importance of a praecox diagnosis in pneumonia disease :
+### The importance of a praecox diagnosis in pneumonia infections :
 
 ####
 Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
@@ -25,13 +25,13 @@ The *dataset* that is been used for train our model come from *Keggle* and conta
 ####
 ---
 ### Software architecture :
-We decided to split the service in two separated function :
+We decided to split the services in two separated function :
 #### TF-Serving (*Model*) : 
-This function needs a lot of GPU resources and its task consist into apply the *model* on the data provided from the *gateway* and send back the results.
-#### *Gateway* :
-This function get the input data from the user interface and pre-elaborate the image.
+This function get in input a pre-eleborate image and apply inference on it using the model that we trained for this pourpouse. This function needs a lot of GPU resources, the *model* is applied on the data coming from the *gateway-service* and send back to it the obtained results.
+#### *Gateway-service* :
+This function read the input image from an URL provided from the user through the user interface, and provide the request pre-elaboration on the image.
 After this elaboration the *gateway-service* send the data to the *TF-Serving* and receive back the evaluation.
-Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted there in a post-elaboration and give back to the *user-terminal*.
+Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted in a post-elaboration and gave back to the *user*.
 
 ---
 
@@ -62,6 +62,18 @@ This is the file to build the *docker* for the *gateway service*. We use this *d
 This script provide the access at the diagnostic service, it loads the image url from the *user_terminal* and send it to the *gateway-service* receving back the image evaluation.
 #### - docker-compose.yaml
 This configuration file it is used to put the two docker in the same network and test the services using the *docker-compose* function.
+#### - kube-config folder
+This folder contains the *kuberenetes* configuration file that we will use in section_3.
+##### - model-deployment.yaml
+Configuration file for the model deployment.
+##### - model-service.yaml
+Configuration file for the model service.
+##### - gateway-deployment.yaml
+Configuration file for the gateway deployment.
+##### - gateway-service.yaml
+Configuration file for the gateway service.
+#### - test_kuberenetes.py
+Script to test our services deployed in a local kuberenetes
 
 ---
 
@@ -73,12 +85,21 @@ git clone https://github.com/ISENBECK66/X-NetMed
 
 ---
 
-# 1 - Docker TF-Serving, flask Gateway, test_local
-
+# 1 - Architecture : Docker for *TF-Serving*, flask for *Gateway*, python for *test_local.py*  (with URL hardcoded in the test script)
+---
+##### Prerequisite :
+---
+- Install docker :
+```
+install docker
+```
+- Install virtual environment:
+```
+pip install pipenv
+```
 ---
 ##### Terminal_1 - TF-Serving (model) 
 ---
-
 *TF-serving* Docker :
 - Build docker:
 ```
@@ -91,11 +112,8 @@ docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ---
 ##### Terminal_2 - GATEWAY SERVICE
 ---
-Flask, gunicorn and virtual environment:
-```
-pip install pipenv
-```
-From the project's folder, run :
+Install dependencies in the virtual environment :
+(Run it into the folder where Pipfile and Pipfile.lock are located)
 ``` 
 pipenv install
 ```
@@ -113,8 +131,14 @@ python test_local.py
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
 
 ---
-# 2 - docker-composer and Test
+# 2 - Architecture : Docker_1 for *TF-Serving*, Docker_2 for *Gateway*, python for *test.py*. (docker-compose to run the two Dockers in the same network)
 ---
+##### Prerequisite :
+---
+- Install docker-compose :
+```
+install docker-compose
+```
 ##### Terminal_1 - Docker-compose :
 ---
 - Run the compose :
@@ -127,13 +151,101 @@ docker-compose up
 ```
 python test.py
 ```
+######
 Warning : the URL of an image of a chest in x-ray will be requested from *test.py* script.
 
-Here there are some urls that can be tested : 
+Here you can find a set of URLs that you can use to test the service, otherwise you can upload your personal *chest x-ray image* and provide the URL to the script. 
+
 https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true - (NORMALE)
 https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true - (NORMALE)
 https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - (PNEUMONIA)
 https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - (PNEUMONIA)
+######
 
 ---
-# 3 - Kubernetes 
+# Deployment 3 : Kubernetes - Running dockers in the cloud ! 
+---
+
+##### Prerequisite:
+---
+###### Install docker:
+```
+install docker
+```
+###### Install kind: tool to set-up a local kuberenetes cluster
+```
+install kind
+```
+###### Install kubectl: tool for interacting with every kuberenetes cluster
+```
+install kubectl
+```
+---
+##### Cluster management:
+---
+###### Create the cluster (default name kind):
+```
+kind create cluster
+```
+###### Show cluster information:
+```
+kubectl cluster-info --context kind-kind
+```
+---
+##### Load dockers in the cluster:
+---
+```
+kind load docker-image final-proj-model:resnet50-v2-001
+```
+```
+kind load docker-image final-proj-gateway:001
+```
+---
+##### Set up Deployments in the cluster:
+---
+```
+cd kube-config
+```
+```
+kubectl apply -f model-deployment.yaml
+```
+```
+kubectl apply -f gateway-deployment.yaml
+```
+---
+##### Set up Services in the cluster:
+---
+```
+kubectl apply -f model-service.yaml
+```
+```
+kubectl apply -f gateway-service.yaml
+```
+---
+##### Verify Pods and Services status in the cluster:
+---
+```
+kubectl get pod
+```
+```
+kubectl get service
+```
+---
+##### TEST the deployment:
+---
+```
+cd ..
+```
+```
+python test_kuberenetes.py
+```
+######
+Warning : the URL of an image of a chest in x-ray will be requested from *test_kuberenetes.py* script.
+
+Here you can find a set of URLs that you can use to test the service, otherwise you can upload your personal *chest x-ray image* and provide the URL to the script. 
+
+https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=true - (NORMALE)
+https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true - (NORMALE)
+https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - (PNEUMONIA)
+https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - (PNEUMONIA)
+######
