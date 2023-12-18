@@ -9,14 +9,14 @@
 ### The importance of a praecox pneumonia infection's diagnosis:
 
 ####
-Pneumonia is inflammation and fluid in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
+Pneumonia is an inflammation in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
 Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and sometimes appropriate microbiological testing. Its primary purpose is to diagnose or exclude pneumonia.
-Certainly, in the case of patients admitted to hospital there is evidence that the early performance of a chest radiograph is associated with clinical benefit, including a significantly shorter hospital length of stay and antibiotic use after radiologyIt is possible for doctors to understand the presence of Pneumonia.
+
 ####
 ---
 ### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images:
 ####
-The target of this project is to automatically verify the presence of a pneumonia infection throught the analisys of the x-ray images of the patient's chest.
+The target of this project is to create a service that automatically verify the presence of a pneumonia infection, using Deep Learning tools on the x-ray images of patient's chest.
 We used a Neural Network and a pretrained model that it is been adapted for our scopes.
 The choosen pre-trained model it has been *ResNet50* from the *keras* package.
 The initial weights for the preprocess of the images come from *imagenet*.
