@@ -1,7 +1,11 @@
 # X-NetMed, or: 
 ## *a Neural Network approach to pneumonia identification in X-rays images*
-![Screenshot](human-skull-x-ray-image.webp)
+<img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300"> <img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300"> <img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300">
+
+
+
 ---
+
 ### The importance of a praecox pneumonia infection's diagnosis:
 
 ####
@@ -91,7 +95,7 @@ git clone https://github.com/ISENBECK66/X-NetMed
 # Deployment 1 - Docker and flask 
 ## A local implementation!
 ---
-##### Prerequisite :
+#### Prerequisite :
 ---
 - Install docker :
 ```
@@ -102,7 +106,7 @@ install docker
 pip install pipenv
 ```
 ---
-##### Terminal_1 - TF-Serving (model) 
+#### Terminal_1 - TF-Serving in a docker 
 ---
 *TF-serving* Docker :
 - Build docker:
@@ -114,7 +118,7 @@ docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
 docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ```
 ---
-##### Terminal_2 - GATEWAY SERVICE
+#### Terminal_2 - Gateway as local service
 ---
 Install dependencies in the virtual environment:
 (Run it into the folder where Pipfile and Pipfile.lock are located)
@@ -127,7 +131,7 @@ pipenv install
 pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ```
 ---
-##### Terminal_3 - TEST_LOCAL
+#### Terminal_3 - TEST
 ---
 ```
 python test_local.py
@@ -139,25 +143,25 @@ Warning : the url of the image it is *hardcoded* in the script, if you want to e
 ## Run everything in dockers, almost ready for the cloud! 
 
 ---
-##### Prerequisite:
+#### Prerequisite:
 ---
 - Install docker-compose:
 ```
 install docker-compose
 ```
-##### Terminal_1 - Docker-compose:
+#### Terminal_1 - Docker-compose:
 ---
 - Run the compose:
 ```
 docker-compose up
 ```
 ---
-##### Terminal_2 - Test:
+#### Terminal_2 - Test:
 ---
 ```
 python test.py
 ```
-######
+#####
 Warning : the URL of an image of a chest in x-ray will be requested from *test.py* script.
 
 Here you can find a set of URLs that you can use to test the service, otherwise you can upload your personal *chest x-ray image* and provide the URL to the script. 
@@ -166,40 +170,40 @@ https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=tru
 https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true - (NORMALE)
 https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - (PNEUMONIA)
 https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - (PNEUMONIA)
-######
+#####
 
 ---
 # Deployment 3 : Kubernetes
 ## Run dockers in the cloud with automatic scaling and management! 
 ---
 
-##### Prerequisite:
+#### Prerequisite:
 ---
-###### Install docker:
+##### Install docker:
 ```
 install docker
 ```
-###### Install kind: tool to set-up a local kuberenetes cluster
+##### Install kind: tool to set-up a local kuberenetes cluster
 ```
 install kind
 ```
-###### Install kubectl: tool for interacting with every kuberenetes cluster
+##### Install kubectl: tool for interacting with every kuberenetes cluster
 ```
 install kubectl
 ```
 ---
-##### Cluster management:
+#### Cluster management:
 ---
-###### Create the cluster (default name kind):
+##### Create the cluster (default name kind):
 ```
 kind create cluster
 ```
-###### Show cluster information:
+##### Show cluster information:
 ```
 kubectl cluster-info --context kind-kind
 ```
 ---
-##### Load dockers in the cluster:
+#### Load dockers in the cluster:
 ---
 ```
 kind load docker-image final-proj-model:resnet50-v2-001
@@ -208,7 +212,7 @@ kind load docker-image final-proj-model:resnet50-v2-001
 kind load docker-image final-proj-gateway:001
 ```
 ---
-##### Set up Deployments in the cluster:
+#### Set up Deployments in the cluster:
 ---
 ```
 cd kube-config
@@ -220,7 +224,7 @@ kubectl apply -f model-deployment.yaml
 kubectl apply -f gateway-deployment.yaml
 ```
 ---
-##### Set up Services in the cluster:
+#### Set up Services in the cluster:
 ---
 ```
 kubectl apply -f model-service.yaml
@@ -229,7 +233,7 @@ kubectl apply -f model-service.yaml
 kubectl apply -f gateway-service.yaml
 ```
 ---
-##### Verify Pods and Services status in the cluster:
+#### Verify Pods and Services status in the cluster:
 ---
 ```
 kubectl get pod
@@ -238,12 +242,12 @@ kubectl get pod
 kubectl get service
 ```
 ---
-##### NOW in another terminal we can TEST the deployment:
+#### TEST the deployment - from a new terminal:
 ---
 ```
 python test_kuberenetes.py
 ```
-######
+#####
 Warning : the URL of an image of a chest in x-ray will be requested from *test_kuberenetes.py* script.
 
 Here you can find a set of URLs that you can use to test the service, otherwise you can upload your personal *chest x-ray image* and provide the URL to the script. 
@@ -252,4 +256,4 @@ https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0132-0001.jpeg?raw=tru
 https://github.com/ISENBECK66/ML2023/blob/main/NORMAL2-IM-0135-0001.jpeg?raw=true - (NORMALE)
 https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true - (PNEUMONIA)
 https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - (PNEUMONIA)
-######
+#####
