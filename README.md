@@ -20,7 +20,7 @@ The initial weights for the preprocess of the images come from *imagenet*.
 --- 
 ### Dataset:
 ####
-The *dataset* that is been used for train our model come from *Keggle* and contains almost 6000 x-ray images splitted in *NORMAL* and *PNEUMONIA* classes.
+The *dataset* that is been used for train our model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
 Here you can find all the information that you need about the dataset :
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
 ####
@@ -28,13 +28,13 @@ Here you can find all the information that you need about the dataset :
 ### Software architecture :
 We decided to develop two services dedicated to two specific functions:
 #### TF-Serving (*Model*): 
-This function get in input a pre-eleborate image, and it is designed only to apply inference on it using the model that we trained for this pourpouse. 
-This function needs a lot of GPU resources to evaluate the image and this is a reason behind our choice to have two different services. 
-The *model* is applied on the data coming from the *gateway-service* and the service send back to it the results obtained from the elaboration.
+This function get in input a pre-eleborate image, and it is designed to apply inference on it, using the model that we trained for this pourpouse. 
+This function needs a lot of GPU resources to evaluate the images and this is the reason behind our choice to have our application splitted in two different services. 
+The *model* is applied on the data that are coming from the *gateway-service*, *TF-Serving* send back to it the results of the elaboration.
 #### *Gateway-service*:
 This function read the input image from an URL provided from the user through the user interface, and provide the specific pre-elaboration required from the *model*.
-After this elaboration the *gateway-service* send the data trought the network to the *TF-Serving*, and wait to receive back the evaluation.
-Once this function obtain the evaluation from the *TF-Serving*, the data are adjusted in a final elaboration and gave back to the *user*.
+After this elaboration the *gateway-service* send the data trought the network to the *TF-Serving* service, and wait to receive back the evaluation.
+Once received back the evaluation, the data are organized and adjusted at this level before the answer is sent back to the user through the terminal.
 
 ---
 
@@ -238,11 +238,8 @@ kubectl get pod
 kubectl get service
 ```
 ---
-##### TEST the deployment:
+##### NOW in another terminal we can TEST the deployment:
 ---
-```
-cd ..
-```
 ```
 python test_kuberenetes.py
 ```
