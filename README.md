@@ -17,31 +17,48 @@ Not surprisingly many consider that chest radiology, which is a relatively inexp
 ### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images:
 ####
 The target of this project is to create a service that automatically verify the presence of a pneumonia infection, using Deep Learning tools on the x-ray images of patient's chest.
-We used a Neural Network and a pretrained model that it is been adapted for our scopes.
+On the base layer of a pretrained model I built a new top layer, that it is been trained to our scopes through a Neural Network.
 The choosen pre-trained model it has been *ResNet50* from the *keras* package.
 The initial weights for the preprocess of the images come from *imagenet*.
 ####
 --- 
 ### Dataset:
 ####
-The *dataset* that is been used for train our model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
-Here you can find all the information that you need about the dataset :
+The *dataset* used for training of the model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
+Here you can find all the information about the dataset :
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
 ####
 ---
 ### Software architecture :
-We decided to develop two services dedicated to two specific functions:
-#### TF-Serving (*Model*): 
-This function get in input a pre-eleborate image, and it is designed to apply inference on it, using the model that we trained for this pourpouse. 
-This function needs a lot of GPU resources to evaluate the images and this is the reason behind our choice to have our application splitted in two different services. 
-The *model* is applied on the data that are coming from the *gateway-service*, *TF-Serving* send back to it the results of the elaboration.
-#### *Gateway-service*:
-This function read the input image from an URL provided from the user through the user interface, and provide the specific pre-elaboration required from the *model*.
-After this elaboration the *gateway-service* send the data trought the network to the *TF-Serving* service, and wait to receive back the evaluation.
-Once received back the evaluation, the data are organized and adjusted at this level before the answer is sent back to the user through the terminal.
+I decided to develop two services, once for each main function:
+
+#### Service 1 - *Gateway*:
+This function load the input image from an URL provided from the user through the user interface, execute a specific preprocessing, and send this data trought the network to the *TF-Serving* service. At this point the *Gateway-service* wait to have the evaluation back from TF-Serving to execute a post elaboration to present the data back to the user.
+#### Service 2 - TF-Serving: 
+This function input it is a preprocessed image, and it is designed to apply inference on this data, using the model that we trained for this scope. 
+TF-Service use a lot of GPU resources to evaluate the image, and this is one of the main reason behind the choice to split the application in two different services. 
+The *model* is applied on the preprocessed image coming from the *gateway-service*, and *TF-Serving* send back to that service the results of the elaboration.
 
 ---
 
+### Software architecture :
+
+```mermaid
+sequenceDiagram
+    Actor User
+    box rgb(33,66,99) Service_1
+    participant Gateway
+    end
+    box rgb(33,66,99) Service_2
+    participant TF-Serving
+    end
+    User->>Gateway: image URL
+    Gateway->>TF-Serving: preprocessed image
+    TF-Serving->>TF-Serving: model
+    TF-Serving->>Gateway: evaluation
+    Gateway->>User: postprocessed evaluation 
+```
+---
 ### Repository content:
 #### - notebook.ipynb file
 This repository contains *notebook.ipynb file* : In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
@@ -145,12 +162,25 @@ Warning : the url of the image it is *hardcoded* in the script, if you want to e
 ---
 #### Prerequisite:
 ---
-- Install docker-compose:
+- Install docker:
+```
+install docker
+```
+- Install docker-composer:
 ```
 install docker-compose
 ```
-#### Terminal_1 - Docker-compose:
+
+#### Terminal_1 - Dockers set up and compose 
 ---
+- Build *TF-serving* docker:
+```
+docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
+```
+- Build *Gateway* docker:
+```
+docker build -t final-proj-gateway:001 -f image-gateway.dockerfile .
+```
 - Run the compose:
 ```
 docker-compose up
@@ -203,7 +233,7 @@ kind create cluster
 kubectl cluster-info --context kind-kind
 ```
 ---
-#### Load dockers in the cluster:
+#### Load docker images into the cluster:
 ---
 ```
 kind load docker-image final-proj-model:resnet50-v2-001
@@ -240,6 +270,12 @@ kubectl get pod
 ```
 ```
 kubectl get service
+```
+---
+#### Port forward :
+---
+```
+kubectl port-forward service/gateway 8080:80
 ```
 ---
 #### TEST the deployment - from a new terminal:
