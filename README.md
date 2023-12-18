@@ -170,7 +170,7 @@ https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - 
 
 ---
 # Deployment 3 : Kubernetes
-##Run dockers in the cloud with automatic scaling and management! 
+## Run dockers in the cloud with automatic scaling and management! 
 ---
 
 ##### Prerequisite:
