@@ -9,22 +9,22 @@
 ### The importance of a praecox pneumonia infection's diagnosis:
 
 ####
-Pneumonia is an inflammation in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
-Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and sometimes appropriate microbiological testing. Its primary purpose is to diagnose or exclude pneumonia.
+Pneumonia is an inflammation in your lungs caused by a bacterial, viral or fungal infection that makes difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia. Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and (sometimes) appropriate microbiological testing. The primary purpose of chest radiology is to diagnose or exclude pneumonia.
 
 ####
 ---
-### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images:
+### Neural Network and Deep Learning - a binary classification for chest x-ray images:
 ####
-The target of this project is to create a service that automatically verify the presence of a pneumonia infection, using Deep Learning tools on the x-ray images of patient's chest.
-On the base layer of a pretrained model I built a new top layer, that it is been trained to our scopes through a Neural Network.
-The choosen pre-trained model it has been *ResNet50* from the *keras* package.
-The initial weights for the preprocess of the images come from *imagenet*.
+The target of this project is to use Deep Learning to create a service that automatically verify the presence of a pneumonia infection, processing the x-ray images of patients's chest.
+On the base layer of a pretrained image classification model I built a new top layer, that has been trained to serve our scopes through a Neural Network.
+The choosen pre-trained model is *ResNet50* from the *keras* package.
+The initial weights in the preprocess model are coming from *imagenet*.
+
 ####
 --- 
 ### Dataset:
 ####
-The *dataset* used for training of the model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
+The *dataset* used for the training of the model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
 Here you can find all the information about the dataset :
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
 ####
@@ -33,11 +33,19 @@ Here you can find all the information about the dataset :
 I decided to develop two services, once for each main function:
 
 #### Service 1 - *Gateway*:
-This function load the input image from an URL provided from the user through the user interface, execute a specific preprocessing, and send this data trought the network to the *TF-Serving* service. At this point the *Gateway-service* wait to have the evaluation back from TF-Serving to execute a post elaboration to present the data back to the user.
+- 1 This function load the input, an x-ray image, from an URL that is provided from the user through the user interface.
+- 2 Execute a specific preprocessing on the image.
+- 3 Send the data obtained trought the network to the *TF-Serving* service.
+- 4 Wait the evaluation coming back from *TF-Serving*
+- 5 Execute a post elaboration to present the results back to the user.
+  
 #### Service 2 - TF-Serving: 
-This function input it is a preprocessed image, and it is designed to apply inference on this data, using the model that we trained for this scope. 
-TF-Service use a lot of GPU resources to evaluate the image, and this is one of the main reason behind the choice to split the application in two different services. 
-The *model* is applied on the preprocessed image coming from the *gateway-service*, and *TF-Serving* send back to that service the results of the elaboration.
+- 1 This service take a preprocessed image as an input, coming from *Gateway* service.
+- 2 The main task of this service it is to apply inference on the received data, using the model that we trained for this scope.
+  
+  *TF-Service use a lot of GPU resources to evaluate the image, and this is one of the main reason behind the choice to split the application in two different services*
+  
+- 3 Send back to *gateway* service the results of the elaboration.
 
 ---
 
