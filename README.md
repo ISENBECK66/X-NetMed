@@ -69,43 +69,43 @@ sequenceDiagram
 ---
 ### Repository content:
 #### - notebook.ipynb file
-This repository contains *notebook.ipynb file* : In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
+In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
 We worked on the *model* building on its top our specific *dense layer / inner layer* trained on the images loaded from our *dataset*.     
-In the same file we tried different setup to obtain the best performance, tuning model parameters, as : *leraning_rate*, *drop_rate* and *augmentation*.
+In the same file we tuned the model parameters: *leraning_rate*, *drop_rate* and *augmentation* to obtain the best performances, and exported the best model we obtained in a h5 file.
 #### - ResNet50_v2_12_0.950.h5 file
 We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*.
 #### - chest_xray-model folder
-This is our final model format, we obtain it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format it is compatible with *TF-Serving* service.
+This is the final format of the model, we obtained it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format the model it is compatible with *TF-Serving* service.
 #### - image-model-dockerfile
-This is the *docker* that we buil to apply the model.
-We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*.
+We use this file to build the *docker* running the *TF-Serving* service.
 #### - tf-serving-connect.ipynb
-Through this notebook we implemented the *gateway* service that provide image's pre-elaboration and send it to *image-model-dockerfile* that it is running to evaluate the x-ray chest images submitted.
+Through this notebook we implemented the *gateway* service.
 #### - gateway.py
-this is the convertion of the notebook *tf-serving-connect.ipynb* in a python script.
+This is the convertion of the notebook *tf-serving-connect.ipynb* in a python script.
 #### - Pipfile and Pipfile.lock
-These files specify the dependencies that *gateway.py* script needs to install running in a virtual environment.
+These files specify the dependencies that *gateway.py* script needs to be installed and run in a virtual environment.
 #### - proto.py
-In this file we included the method *np_to_protobuf()*, this is the only method thatvwe need from *tensorflow* library.
-In this way we can avoid to include in the project the huge *tensorflow* library (1.7Gb).
+In this file we have the method *np_to_protobuf()*, in this way we can avoid to include in the project the huge *tensorflow* library (1.7Gb).
+#### - test_local.py
+Script to test deployment_1 : *gateway* running in a virtual environment and *TF-Serving* in a docker
 #### - image-gateway.dockerfile
-This is the file to build the *docker* for the *gateway service*. We use this *dockerfile* to specify its parameters.
-#### - test.py
-This script provide the access at the diagnostic service, it loads the image url from the *user_terminal* and send it to the *gateway-service* receving back the image evaluation.
+We use this file to build the *docker* running the *gateway* service.
 #### - docker-compose.yaml
 This configuration file it is used to put the two docker in the same network and test the services using the *docker-compose* function.
+#### - test.py
+Script to test deployment_2 : two services running in two dockers in one docker-compose
 #### - kube-config folder
 This folder contains the *kuberenetes* configuration file that we will use in section_3.
-#### - model-deployment.yaml
+#### - kube-config/model-deployment.yaml
 Configuration file for the model deployment.
-#### - model-service.yaml
+#### - kube-config/model-service.yaml
 Configuration file for the model service.
-#### - gateway-deployment.yaml
+#### - kube-config/gateway-deployment.yaml
 Configuration file for the gateway deployment.
-#### - gateway-service.yaml
+#### - kube-config/gateway-service.yaml
 Configuration file for the gateway service.
 #### - test_kuberenetes.py
-Script to test our services deployed in a local kuberenetes
+Script to test deployment_3 : two services deployed in a local cloud.
 
 ---
 
