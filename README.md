@@ -124,7 +124,7 @@ git clone https://github.com/ISENBECK66/X-NetMed
 ---
 - Install docker :
 ```
-install docker
+pip install docker
 ```
 - Install virtual environment:
 ```
@@ -133,6 +133,8 @@ pip install pipenv
 ---
 #### Terminal_1 - TF-Serving in a docker 
 ---
+Open a terminal in the main folder of the project.
+
 *TF-serving* Docker :
 - Build docker:
 ```
@@ -145,6 +147,8 @@ docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ---
 #### Terminal_2 - Gateway as local service
 ---
+Open a new terminal in the main folder of the project.
+
 Install dependencies in the virtual environment:
 (Run it into the folder where Pipfile and Pipfile.lock are located)
 ``` 
@@ -158,11 +162,14 @@ pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ---
 #### Terminal_3 - TEST
 ---
+
+Open a new terminal in the main folder of the project.
+
 ```
 python test_local.py
 ```
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
-
+URL hardcoded : https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true
 ---
 # Deployment 2: docker-compose
 ## Run everything in dockers, almost ready for the cloud! 
@@ -172,15 +179,18 @@ Warning : the url of the image it is *hardcoded* in the script, if you want to e
 ---
 - Install docker:
 ```
-install docker
+pip install docker
 ```
 - Install docker-composer:
 ```
-install docker-compose
+pip install docker-compose
 ```
 
 #### Terminal_1 - Dockers set up and compose 
 ---
+
+Open a new terminal in the main folder of the project.
+
 - Build *TF-serving* docker:
 ```
 docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
@@ -196,6 +206,8 @@ docker-compose up
 ---
 #### Terminal_2 - Test:
 ---
+Open a new terminal in the main folder of the project
+
 ```
 python test.py
 ```
@@ -219,15 +231,15 @@ https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - 
 ---
 ##### Install docker:
 ```
-install docker
+pip install docker
 ```
 ##### Install kind: tool to set-up a local kuberenetes cluster
 ```
-install kind
+pip install kind
 ```
 ##### Install kubectl: tool for interacting with every kuberenetes cluster
 ```
-install kubectl
+pip install kubectl
 ```
 ---
 #### Cluster management:
@@ -243,6 +255,9 @@ kubectl cluster-info --context kind-kind
 ---
 #### Load docker images into the cluster:
 ---
+
+Open a terminal in the main folder of the project
+
 ```
 kind load docker-image final-proj-model:resnet50-v2-001
 ```
@@ -286,8 +301,9 @@ kubectl get service
 kubectl port-forward service/gateway 8080:80
 ```
 ---
-#### TEST the deployment - from a new terminal:
+#### TEST the deployment:
 ---
+Open a new terminal in the main folder of the project
 ```
 python test_kuberenetes.py
 ```
