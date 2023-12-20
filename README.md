@@ -120,16 +120,12 @@ git clone https://github.com/ISENBECK66/X-NetMed
 # Deployment 1 - Docker and flask 
 ## A local implementation!
 ---
+
 #### Prerequisite :
 ---
-- Install docker :
-```
-pip install docker
-```
-- Install virtual environment:
-```
-pip install pipenv
-```
+
+- Make sure to have properly installed : *docker* and *pipenv*:
+
 ---
 #### Terminal_1 - TF-Serving in a docker 
 ---
@@ -178,15 +174,10 @@ URL hardcoded : https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.
 ---
 #### Prerequisite:
 ---
-- Install docker:
-```
-pip install docker
-```
-- Install docker-composer:
-```
-pip install docker-compose
-```
 
+- Make sure to have properly installed : *docker* and *docker-compose*:
+
+---
 #### Terminal_1 - Dockers set up and compose 
 ---
 
@@ -230,18 +221,9 @@ https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - 
 
 #### Prerequisite:
 ---
-##### Install docker:
-```
-pip install docker
-```
-##### Install kind: tool to set-up a local kuberenetes cluster
-```
-pip install kind
-```
-##### Install kubectl: tool for interacting with every kuberenetes cluster
-```
-pip install kubectl
-```
+
+- Make sure to have properly installed : *docker*, *kind* and *kubectl*.
+
 ---
 #### Cluster management:
 ---
