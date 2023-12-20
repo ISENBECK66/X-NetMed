@@ -164,12 +164,13 @@ pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ---
 
 Open a new terminal in the main folder of the project.
-
+Run the test script:
 ```
 python test_local.py
 ```
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
 URL hardcoded : https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true
+
 ---
 # Deployment 2: docker-compose
 ## Run everything in dockers, almost ready for the cloud! 
@@ -206,8 +207,8 @@ docker-compose up
 ---
 #### Terminal_2 - Test:
 ---
-Open a new terminal in the main folder of the project
-
+Open a new terminal in the main folder of the project.
+Run the test script:
 ```
 python test.py
 ```
@@ -303,7 +304,8 @@ kubectl port-forward service/gateway 8080:80
 ---
 #### TEST the deployment:
 ---
-Open a new terminal in the main folder of the project
+Open a new terminal in the main folder of the project.
+Rum the Test script:
 ```
 python test_kuberenetes.py
 ```
