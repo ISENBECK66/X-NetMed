@@ -15,7 +15,7 @@ result = requests.post(url, json=data).json()
 if result==1:
 	print("		>>>>>>>>>>>>>>>>>>>>>>>>>  PNEUMONIA SEVERE WARNING !!!  <<<<<<<<<<<<<<<<<<<<<<<<<")
 else:	
-	print("		>>>>>>>>>>>>>>>>>>>>>>>>>  Your X-RAY are OK !!!  <<<<<<<<<<<<<<<<<<<<<<<<<")
+	print("		>>>>>>>>>>>>>>>>>>>>>>>>>  X-RAY negative to pneumonia, you are OK !  <<<<<<<<<<<<<<<<<<<<<<<<<")
 	
 print()
 print()
