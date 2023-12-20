@@ -9,22 +9,22 @@
 ### The importance of a praecox pneumonia infection's diagnosis:
 
 ####
-Pneumonia is an inflammation in your lungs caused by a bacterial, viral or fungal infection. It makes it difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia.
-Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and sometimes appropriate microbiological testing. Its primary purpose is to diagnose or exclude pneumonia.
+Pneumonia is an inflammation in your lungs caused by a bacterial, viral or fungal infection that makes difficult to breathe and can cause a fever and cough with yellow, green or bloody mucus. The flu, COVID-19 and pneumococcal disease are common causes of pneumonia. Treatment depends on the cause and severity of pneumonia. Not surprisingly many consider that chest radiology, which is a relatively inexpensive test, plays a fundamental and important role in the diagnosis of pneumonia, together with clinical assessment and (sometimes) appropriate microbiological testing. The primary purpose of chest radiology is to diagnose or exclude pneumonia.
 
 ####
 ---
-### Neural Network and Deep Learning to build a binary classifier to elaborate x-ray images:
+### Neural Network and Deep Learning - a binary classification for chest x-ray images:
 ####
-The target of this project is to create a service that automatically verify the presence of a pneumonia infection, using Deep Learning tools on the x-ray images of patient's chest.
-On the base layer of a pretrained model I built a new top layer, that it is been trained to our scopes through a Neural Network.
-The choosen pre-trained model it has been *ResNet50* from the *keras* package.
-The initial weights for the preprocess of the images come from *imagenet*.
+The target of this project is to use Deep Learning to create a service that automatically verify the presence of a pneumonia infection, processing the x-ray images of patients's chest.
+On the base layer of a pretrained image classification model I built a new top layer, that has been trained to serve our scopes through a Neural Network.
+The choosen pre-trained model is *ResNet50* from the *keras* package.
+The initial weights in the preprocess model are coming from *imagenet*.
+
 ####
 --- 
 ### Dataset:
 ####
-The *dataset* used for training of the model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
+The *dataset* used for the training of the model come from *Keggle* and contains ~ 6000 x-ray images, splitted in *NORMAL* and *PNEUMONIA* classes.
 Here you can find all the information about the dataset :
 [https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia]
 ####
@@ -33,11 +33,19 @@ Here you can find all the information about the dataset :
 I decided to develop two services, once for each main function:
 
 #### Service 1 - *Gateway*:
-This function load the input image from an URL provided from the user through the user interface, execute a specific preprocessing, and send this data trought the network to the *TF-Serving* service. At this point the *Gateway-service* wait to have the evaluation back from TF-Serving to execute a post elaboration to present the data back to the user.
+- 1 This function load the input, an x-ray image, from an URL that is provided from the user through the user interface.
+- 2 Execute a specific preprocessing on the image.
+- 3 Send the data obtained trought the network to the *TF-Serving* service.
+- 4 Wait the evaluation coming back from *TF-Serving*
+- 5 Execute a post elaboration to present the results back to the user.
+  
 #### Service 2 - TF-Serving: 
-This function input it is a preprocessed image, and it is designed to apply inference on this data, using the model that we trained for this scope. 
-TF-Service use a lot of GPU resources to evaluate the image, and this is one of the main reason behind the choice to split the application in two different services. 
-The *model* is applied on the preprocessed image coming from the *gateway-service*, and *TF-Serving* send back to that service the results of the elaboration.
+- 1 This service take a preprocessed image as an input, coming from *Gateway* service.
+- 2 The main task of this service it is to apply inference on the received data, using the model that we trained for this scope.
+  
+  *TF-Service use a lot of GPU resources to evaluate the image, and this is one of the main reason behind the choice to split the application in two different services*
+  
+- 3 Send back to *gateway* service the results of the elaboration.
 
 ---
 
@@ -61,43 +69,43 @@ sequenceDiagram
 ---
 ### Repository content:
 #### - notebook.ipynb file
-This repository contains *notebook.ipynb file* : In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
+In this file we load the *ResNet50* model and the *dataset* downloaded from kaggle.
 We worked on the *model* building on its top our specific *dense layer / inner layer* trained on the images loaded from our *dataset*.     
-In the same file we tried different setup to obtain the best performance, tuning model parameters, as : *leraning_rate*, *drop_rate* and *augmentation*.
+In the same file we tuned the model parameters: *leraning_rate*, *drop_rate* and *augmentation* to obtain the best performances, and exported the best model we obtained in a h5 file.
 #### - ResNet50_v2_12_0.950.h5 file
 We used the *keras.callbacks.ModelCheckpoint()* function to export the most performing model into the file: *ResNet50_v2_12_0.950.h5*.
 #### - chest_xray-model folder
-This is our final model format, we obtain it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format it is compatible with *TF-Serving* service.
+This is the final format of the model, we obtained it as output of method *tf_saved_model.save()*, applied to our *ResNet50_v2_12_0.950.h5* ; in this format the model it is compatible with *TF-Serving* service.
 #### - image-model-dockerfile
-This is the *docker* that we buil to apply the model.
-We decided to have two separated services, one specialized in model application *model*, and another one that collect the requests from the client and provide to data elaboration pre and post evaluation *gateway*.
+We use this file to build the *docker* running the *TF-Serving* service.
 #### - tf-serving-connect.ipynb
-Through this notebook we implemented the *gateway* service that provide image's pre-elaboration and send it to *image-model-dockerfile* that it is running to evaluate the x-ray chest images submitted.
+Through this notebook we implemented the *gateway* service.
 #### - gateway.py
-this is the convertion of the notebook *tf-serving-connect.ipynb* in a python script.
+This is the convertion of the notebook *tf-serving-connect.ipynb* in a python script.
 #### - Pipfile and Pipfile.lock
-These files specify the dependencies that *gateway.py* script needs to install running in a virtual environment.
+These files specify the dependencies that *gateway.py* script needs to be installed and run in a virtual environment.
 #### - proto.py
-In this file we included the method *np_to_protobuf()*, this is the only method thatvwe need from *tensorflow* library.
-In this way we can avoid to include in the project the huge *tensorflow* library (1.7Gb).
+In this file we have the method *np_to_protobuf()*, in this way we can avoid to include in the project the huge *tensorflow* library (1.7Gb).
+#### - test_local.py
+Script to test deployment_1 : *gateway* running in a virtual environment and *TF-Serving* in a docker
 #### - image-gateway.dockerfile
-This is the file to build the *docker* for the *gateway service*. We use this *dockerfile* to specify its parameters.
-#### - test.py
-This script provide the access at the diagnostic service, it loads the image url from the *user_terminal* and send it to the *gateway-service* receving back the image evaluation.
+We use this file to build the *docker* running the *gateway* service.
 #### - docker-compose.yaml
 This configuration file it is used to put the two docker in the same network and test the services using the *docker-compose* function.
+#### - test.py
+Script to test deployment_2 : two services running in two dockers in one docker-compose
 #### - kube-config folder
 This folder contains the *kuberenetes* configuration file that we will use in section_3.
-#### - model-deployment.yaml
+#### - kube-config/model-deployment.yaml
 Configuration file for the model deployment.
-#### - model-service.yaml
+#### - kube-config/model-service.yaml
 Configuration file for the model service.
-#### - gateway-deployment.yaml
+#### - kube-config/gateway-deployment.yaml
 Configuration file for the gateway deployment.
-#### - gateway-service.yaml
+#### - kube-config/gateway-service.yaml
 Configuration file for the gateway service.
 #### - test_kuberenetes.py
-Script to test our services deployed in a local kuberenetes
+Script to test deployment_3 : two services deployed in a local cloud.
 
 ---
 
@@ -116,7 +124,7 @@ git clone https://github.com/ISENBECK66/X-NetMed
 ---
 - Install docker :
 ```
-install docker
+pip install docker
 ```
 - Install virtual environment:
 ```
@@ -125,6 +133,8 @@ pip install pipenv
 ---
 #### Terminal_1 - TF-Serving in a docker 
 ---
+Open a terminal in the main folder of the project.
+
 *TF-serving* Docker :
 - Build docker:
 ```
@@ -137,6 +147,8 @@ docker run -it --rm -p 8500:8500 final-proj-model:resnet50-v2-001
 ---
 #### Terminal_2 - Gateway as local service
 ---
+Open a new terminal in the main folder of the project.
+
 Install dependencies in the virtual environment:
 (Run it into the folder where Pipfile and Pipfile.lock are located)
 ``` 
@@ -150,10 +162,14 @@ pipenv run gunicorn --bind 0.0.0.0:9696 gateway:app
 ---
 #### Terminal_3 - TEST
 ---
+
+Open a new terminal in the main folder of the project.
+Run the test script:
 ```
 python test_local.py
 ```
 Warning : the url of the image it is *hardcoded* in the script, if you want to eavluate another image please modify the script before to run it.
+URL hardcoded : https://github.com/ISENBECK66/ML2023/blob/main/person3_virus_15.jpeg?raw=true
 
 ---
 # Deployment 2: docker-compose
@@ -164,15 +180,18 @@ Warning : the url of the image it is *hardcoded* in the script, if you want to e
 ---
 - Install docker:
 ```
-install docker
+pip install docker
 ```
 - Install docker-composer:
 ```
-install docker-compose
+pip install docker-compose
 ```
 
 #### Terminal_1 - Dockers set up and compose 
 ---
+
+Open a new terminal in the main folder of the project.
+
 - Build *TF-serving* docker:
 ```
 docker build -t final-proj-model:resnet50-v2-001 -f image-model.dockerfile .
@@ -188,6 +207,8 @@ docker-compose up
 ---
 #### Terminal_2 - Test:
 ---
+Open a new terminal in the main folder of the project.
+Run the test script:
 ```
 python test.py
 ```
@@ -211,15 +232,15 @@ https://github.com/ISENBECK66/ML2023/blob/main/person1_virus_11.jpeg?raw=true - 
 ---
 ##### Install docker:
 ```
-install docker
+pip install docker
 ```
 ##### Install kind: tool to set-up a local kuberenetes cluster
 ```
-install kind
+pip install kind
 ```
 ##### Install kubectl: tool for interacting with every kuberenetes cluster
 ```
-install kubectl
+pip install kubectl
 ```
 ---
 #### Cluster management:
@@ -235,6 +256,9 @@ kubectl cluster-info --context kind-kind
 ---
 #### Load docker images into the cluster:
 ---
+
+Open a terminal in the main folder of the project
+
 ```
 kind load docker-image final-proj-model:resnet50-v2-001
 ```
@@ -278,8 +302,10 @@ kubectl get service
 kubectl port-forward service/gateway 8080:80
 ```
 ---
-#### TEST the deployment - from a new terminal:
+#### TEST the deployment:
 ---
+Open a new terminal in the main folder of the project.
+Rum the Test script:
 ```
 python test_kuberenetes.py
 ```
