@@ -1,6 +1,6 @@
 # X-NetMed, or: 
 ## *a Neural Network approach to pneumonia identification in X-rays images*
-<img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300"> <img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300"> <img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300">
+<img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300"> <img src="https://github.com/ISENBECK66/X-NetMed/blob/main/NORMAL2-IM-0132-0001.jpeg" width="300" height="300"> 
 
 
 
